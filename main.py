@@ -42,7 +42,7 @@ def generate_po_file(input_file_path, output_file_path, target_language):
         'POT-Creation-Date': current_time,
         'PO-Revision-Date': current_time,
         'Last-Translator': 'Jacky Chan <jacky.chen@esix.co>',
-        'Language-Team': target_language + ' <jacky.chen@esix.co>',
+        'Language-Team': str(target_language) + ' <jacky.chen@esix.co>',
         'MIME-Version': '1.0',
         'Content-Type': 'text/plain; charset=utf-8',
         'Content-Transfer-Encoding': '8bit',

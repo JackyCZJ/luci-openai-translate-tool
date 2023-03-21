@@ -7,16 +7,34 @@ import tqdm
 import datetime
 
 def generate_po_file(input_file_path, output_file_path, target_language):
-    # Load the input file
-    with open(input_file_path, 'r') as f:
-        input_text = f.read()
+    input_text=""
+    #if input file path is dir then get all files in dir
+    if os.path.isdir(input_file_path):
+        files=os.listdir(input_file_path)
+        for file in files:
+            if os.path.isdir(input_file_path +"/" + file):
+                continue
+            f = open(input_file_path +"/" + file, "r")
+            iter_f = iter(f)
+            for line in iter_f:
+                input_text+=line
+    else:         
+        with open(input_file_path, 'r') as f:
+            input_text = f.read()
 
     # Extract the text to be translated
     text_to_translate = re.findall(r'\_\((.*?)\)', input_text)
+    for i, text in enumerate(text_to_translate):
+        text = text.replace('"', '')
+        text = text.replace("'", '')
+    
+    text_to_translate = list(set(text_to_translate))
 
+        
     # Translate the text using OpenAI API
     translated_text = []
     for text in tqdm.tqdm(text_to_translate):
+        #remove quotes
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=f"Translate the following text into {target_language}: '{text}'",
@@ -50,6 +68,9 @@ def generate_po_file(input_file_path, output_file_path, target_language):
     
     po.metadata = metadata
     for i, text in enumerate(text_to_translate):
+        #remove quotes
+        text = text.replace('"', '')
+        text = text.replace("'", '')
         entry = polib.POEntry(
             msgid=text,
             msgstr=translated_text[i],

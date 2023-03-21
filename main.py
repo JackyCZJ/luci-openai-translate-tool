@@ -80,9 +80,9 @@ def generate_po_file(input_file_path, output_file_path, target_language):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate PO file from input file')
-    parser.add_argument('input_file_path', type=str, help='Path to input file')
-    parser.add_argument('output_file_path', type=str, help='Path to output PO file')
-    parser.add_argument('target_language', type=str, help='Target language for translation')
+    parser.add_argument('input_file_path', required=True,type=str, help='Path to input file')
+    parser.add_argument('output_file_path',required=False, type=str, help='Path to output PO file')
+    parser.add_argument('target_language',required=False, type=str, help='Target language for translation')
     args = parser.parse_args()
 
     if not args.output_file_path:
@@ -101,4 +101,4 @@ if __name__ == '__main__':
         print("Error: OPENAI_API_KEY environment variable not found.")
         exit(1)
     
-    generate_po_file(args.input_file_path, args.output_file_path, args.target_language)
+    generate_po_file(args.input_file_path, output_file_path,  target_language)
